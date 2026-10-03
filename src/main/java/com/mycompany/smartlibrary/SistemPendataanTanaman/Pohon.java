@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.smartlibrary.SistemPendataanTanaman;
 
 
@@ -31,5 +28,10 @@ public class Pohon extends Tanaman {
         super.tampilkanInfo();
         System.out.println("Tinggi Pohon : " + tinggiPohon + " meter");
         System.out.println("Jenis        : Pohon");
+    }
+
+    @Override
+    public void perawatan() {
+        System.out.println("Pohon perlu disiram dan diberi pupuk secara rutin.");
     }
 }

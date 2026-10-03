@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.smartlibrary.SistemPendataanTanaman;
 
 
@@ -31,5 +28,10 @@ public class Bunga extends Tanaman {
         super.tampilkanInfo();
         System.out.println("Warna Bunga  : " + warnaBunga);
         System.out.println("Jenis        : Bunga");
+    }
+
+    @Override
+    public void perawatan() {
+        System.out.println("Bunga perlu disiram dan mendapat cukup sinar matahari.");
     }
 }

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.smartlibrary.SistemPendataanTanaman;
 
 
@@ -13,12 +10,16 @@ public class Main {
     static int jumlahTanaman = 0;
 
     public static void cariTanaman(String nama) {
+
         boolean ditemukan = false;
 
         for (int i = 0; i < jumlahTanaman; i++) {
+
             if (daftarTanaman[i].getNama().equalsIgnoreCase(nama)) {
+
                 System.out.println("\nTanaman ditemukan:");
                 daftarTanaman[i].tampilkanInfo();
+
                 ditemukan = true;
             }
         }
@@ -29,12 +30,16 @@ public class Main {
     }
 
     public static void cariTanaman(int umur) {
+
         boolean ditemukan = false;
 
         for (int i = 0; i < jumlahTanaman; i++) {
+
             if (daftarTanaman[i].getUmur() == umur) {
+
                 System.out.println("\nTanaman dengan umur " + umur + " tahun:");
                 daftarTanaman[i].tampilkanInfo();
+
                 ditemukan = true;
             }
         }
@@ -42,6 +47,12 @@ public class Main {
         if (!ditemukan) {
             System.out.println("Tidak ada tanaman dengan umur tersebut.");
         }
+    }
+
+    public static void prosesPerawatan(Tanaman tanaman) {
+
+        System.out.println("\nProses perawatan:");
+        tanaman.perawatan();
     }
 
     public static void dataAwal() {
@@ -63,7 +74,7 @@ public class Main {
         jumlahTanaman++;
 
         daftarTanaman[jumlahTanaman] =
-                new Bunga("Anggrek", 2, 40000, "Ungu");
+                new TanamanHias("Lidah Mertua", 2, 35000, "Ruang Tamu");
         jumlahTanaman++;
     }
 
@@ -85,8 +96,9 @@ public class Main {
             System.out.println("1. Tambah Data Tanaman");
             System.out.println("2. Tampilkan Seluruh Data");
             System.out.println("3. Cari Tanaman");
-            System.out.println("4. Tampilkan Total Tanaman");
-            System.out.println("5. Keluar");
+            System.out.println("4. Simulasi Perawatan");
+            System.out.println("5. Tampilkan Total Tanaman");
+            System.out.println("6. Keluar");
             System.out.print("Pilih menu: ");
 
             int pilihan = scanner.nextInt();
@@ -104,6 +116,7 @@ public class Main {
                     System.out.println("\nJenis Tanaman:");
                     System.out.println("1. Bunga");
                     System.out.println("2. Pohon");
+                    System.out.println("3. Tanaman Hias");
                     System.out.print("Pilih jenis: ");
 
                     int jenis = scanner.nextInt();
@@ -144,7 +157,20 @@ public class Main {
 
                         System.out.println("Data pohon berhasil ditambahkan.");
 
+                    } else if (jenis == 3) {
+
+                        System.out.print("Lokasi penempatan: ");
+                        String lokasi = scanner.nextLine();
+
+                        daftarTanaman[jumlahTanaman] =
+                                new TanamanHias(nama, umur, harga, lokasi);
+
+                        jumlahTanaman++;
+
+                        System.out.println("Data tanaman hias berhasil ditambahkan.");
+
                     } else {
+
                         System.out.println("Jenis tanaman tidak tersedia.");
                     }
 
@@ -194,6 +220,7 @@ public class Main {
                         cariTanaman(cariUmur);
 
                     } else {
+
                         System.out.println("Pilihan tidak tersedia.");
                     }
 
@@ -201,12 +228,35 @@ public class Main {
 
                 case 4:
 
+                    System.out.println("\nPilih tanaman yang akan dirawat:");
+
+                    for (int i = 0; i < jumlahTanaman; i++) {
+                        System.out.println((i + 1) + ". "
+                                + daftarTanaman[i].getNama());
+                    }
+
+                    System.out.print("Pilih nomor tanaman: ");
+                    int nomor = scanner.nextInt();
+
+                    if (nomor >= 1 && nomor <= jumlahTanaman) {
+
+                        prosesPerawatan(daftarTanaman[nomor - 1]);
+
+                    } else {
+
+                        System.out.println("Nomor tanaman tidak tersedia.");
+                    }
+
+                    break;
+
+                case 5:
+
                     System.out.println("\nTotal tanaman: "
                             + Tanaman.getTotalTanaman());
 
                     break;
 
-                case 5:
+                case 6:
 
                     isRunning = false;
 

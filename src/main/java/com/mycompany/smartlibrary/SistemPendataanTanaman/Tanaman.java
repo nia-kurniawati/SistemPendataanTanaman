@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.smartlibrary.SistemPendataanTanaman;
 
 
@@ -60,6 +57,11 @@ public class Tanaman {
         System.out.println("Nama Tanaman : " + nama);
         System.out.println("Umur         : " + umur + " tahun");
         System.out.println("Harga        : Rp" + harga);
+        System.out.println("Jenis        : Tanaman");
+    }
+
+    public void perawatan() {
+        System.out.println("Tanaman perlu dirawat dan disiram secara rutin.");
     }
 
     public static int getTotalTanaman() {
