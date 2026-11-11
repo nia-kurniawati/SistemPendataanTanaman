@@ -9,7 +9,7 @@ public class Main {
 
     static Scanner input = new Scanner(System.in);
 
-    // Koleksi dibuat di luar SistemTanaman untuk Aggregation.
+    // Aggregation
     static ArrayList<Tanaman> daftarTanaman = new ArrayList<>();
     static HashMap<String, Anggota> dataAnggota = new HashMap<>();
 
@@ -17,10 +17,17 @@ public class Main {
     static TransaksiTanaman transaksi = new TransaksiTanaman();
 
     public static void main(String[] args) {
-        dataAwal();
 
-        // Objek koleksi diberikan kepada class pengelola.
+        // Membuat objek pengelola terlebih dahulu.
         sistem = new SistemTanaman(daftarTanaman, dataAnggota);
+
+        // Memuat data jika file sudah tersedia.
+        boolean dataTersedia = sistem.muatDataDariFile();
+
+        // Data awal hanya dibuat jika belum ada data tersimpan.
+        if (!dataTersedia) {
+            dataAwal();
+        }
 
         boolean berjalan = true;
 
@@ -39,13 +46,17 @@ public class Main {
                 System.out.println("8. Informasi Composition");
                 System.out.println("9. Tampilkan Data Aggregation");
                 System.out.println("10. Transaksi Association");
-                System.out.println("11. Keluar");
+                System.out.println("11. Baca Log Transaksi");
+                System.out.println("12. Simpan Data");
+                System.out.println("13. Muat Data");
+                System.out.println("14. Keluar");
                 System.out.print("Pilih menu: ");
 
                 int pilihan = input.nextInt();
                 input.nextLine();
 
                 switch (pilihan) {
+
                     case 1:
                         tambahTanaman();
                         break;
@@ -67,10 +78,12 @@ public class Main {
                         break;
 
                     case 6:
-                        System.out.println("Jumlah tanaman: "
+                        System.out.println(
+                                "Jumlah tanaman: "
                                 + daftarTanaman.size());
-                        System.out.println("Jumlah objek tanaman yang "
-                                + "pernah dibuat: "
+
+                        System.out.println(
+                                "Jumlah objek tanaman yang pernah dibuat: "
                                 + Tanaman.getTotalTanaman());
                         break;
 
@@ -83,7 +96,9 @@ public class Main {
                         break;
 
                     case 9:
-                        System.out.println("\n--- DATA AGGREGATION ---");
+                        System.out.println(
+                                "\n--- DATA AGGREGATION ---");
+
                         sistem.tampilkanTanaman();
                         sistem.tampilkanAnggota();
                         break;
@@ -93,26 +108,48 @@ public class Main {
                         break;
 
                     case 11:
+                        sistem.bacaLogTransaksi();
+                        break;
+
+                    case 12:
+                        sistem.simpanDataKeFile();
+                        break;
+
+                    case 13:
+                        if (!sistem.muatDataDariFile()) {
+                            System.out.println(
+                                    "Data tersimpan belum tersedia.");
+                        }
+                        break;
+
+                    case 14:
+                        sistem.simpanDataKeFile();
+
                         berjalan = false;
+
                         System.out.println(
                                 "Program selesai. Terima kasih.");
                         break;
 
                     default:
                         throw new TanamanException(
-                                "Pilihan menu harus antara 1 sampai 11.");
+                                "Pilihan menu harus antara 1 sampai 14.");
                 }
 
             } catch (InputMismatchException e) {
+
                 System.out.println(
                         "Kesalahan: masukkan pilihan berupa angka.");
+
                 input.nextLine();
 
             } catch (TanamanException e) {
+
                 System.out.println(
                         "Pesan Exception: " + e.getMessage());
 
             } finally {
+
                 System.out.println(
                         "Finally: proses menu telah diperiksa.");
             }
@@ -122,25 +159,34 @@ public class Main {
     }
 
     static void dataAwal() {
+
         // Lima objek utama.
         daftarTanaman.add(new Bunga("Mawar", 2, 25000));
         daftarTanaman.add(new Bunga("Melati", 1, 15000));
         daftarTanaman.add(new Pohon("Mangga", 5, 150000));
         daftarTanaman.add(new Pohon("Jambu", 3, 100000));
+
         daftarTanaman.add(
                 new TanamanHias("Lidah Mertua", 2, 45000));
 
         // Tiga objek entitas pendukung.
-        dataAnggota.put("2517051001",
+        dataAnggota.put(
+                "2517051001",
                 new Anggota("2517051001", "Melan Panesia Diwa"));
-        dataAnggota.put("2517051002",
+
+        dataAnggota.put(
+                "2517051002",
                 new Anggota("2517051002", "Ajeng"));
-        dataAnggota.put("2517051016",
+
+        dataAnggota.put(
+                "2517051016",
                 new Anggota("2517051016", "Nia Kurniawati"));
     }
 
-    static void validasiTeks(String teks, String keterangan)
+    static void validasiTeks(
+            String teks, String keterangan)
             throws TanamanException {
+
         if (teks == null || teks.trim().isEmpty()) {
             throw new TanamanException(
                     keterangan + " tidak boleh kosong.");
@@ -148,10 +194,12 @@ public class Main {
     }
 
     static void tambahTanaman() throws TanamanException {
+
         System.out.println("\n--- Tambah Tanaman ---");
 
         System.out.print("Nama tanaman: ");
         String nama = input.nextLine();
+
         validasiTeks(nama, "Nama tanaman");
 
         System.out.print("Umur tanaman (tahun): ");
@@ -169,6 +217,7 @@ public class Main {
         System.out.println("1. Bunga");
         System.out.println("2. Pohon");
         System.out.println("3. Tanaman Hias");
+
         System.out.print("Pilih jenis tanaman: ");
 
         int jenis = input.nextInt();
@@ -177,15 +226,19 @@ public class Main {
         Tanaman tanamanBaru;
 
         switch (jenis) {
+
             case 1:
                 tanamanBaru = new Bunga(nama, umur, harga);
                 break;
+
             case 2:
                 tanamanBaru = new Pohon(nama, umur, harga);
                 break;
+
             case 3:
                 tanamanBaru = new TanamanHias(nama, umur, harga);
                 break;
+
             default:
                 throw new TanamanException(
                         "Jenis tanaman tidak tersedia.");
@@ -195,8 +248,10 @@ public class Main {
     }
 
     static void cariTanaman() throws TanamanException {
+
         System.out.print("Nama tanaman yang dicari: ");
         String nama = input.nextLine();
+
         validasiTeks(nama, "Nama pencarian");
 
         Tanaman tanaman = sistem.cariTanaman(nama);
@@ -211,6 +266,7 @@ public class Main {
     }
 
     static void simulasiPerawatan() throws TanamanException {
+
         sistem.tampilkanTanaman();
 
         if (daftarTanaman.isEmpty()) {
@@ -228,11 +284,15 @@ public class Main {
         }
 
         Tanaman tanaman = daftarTanaman.get(nomor - 1);
-        System.out.println("\nPerawatan untuk " + tanaman.getNama());
+
+        System.out.println(
+                "\nPerawatan untuk " + tanaman.getNama());
+
         tanaman.perawatan();
     }
 
     static void kemampuanKhusus() throws TanamanException {
+
         sistem.tampilkanTanaman();
 
         if (daftarTanaman.isEmpty()) {
@@ -251,8 +311,8 @@ public class Main {
 
         Tanaman tanaman = daftarTanaman.get(nomor - 1);
 
-        System.out.println("\nKemampuan khusus "
-                + tanaman.getNama() + ":");
+        System.out.println(
+                "\nKemampuan khusus " + tanaman.getNama() + ":");
 
         if (tanaman instanceof DapatDisiram) {
             DapatDisiram objek = (DapatDisiram) tanaman;
@@ -266,54 +326,68 @@ public class Main {
 
         if (!(tanaman instanceof DapatDisiram)
                 && !(tanaman instanceof DapatDipupuk)) {
+
             System.out.println(
                     "Tidak ada kemampuan khusus yang terdaftar.");
         }
     }
 
     static void menuAnggota() throws TanamanException {
+
         boolean kembali = false;
 
         while (!kembali) {
             try {
-                System.out.println("\n--- Kelola Data Anggota ---");
+                System.out.println(
+                        "\n--- Kelola Data Anggota ---");
+
                 System.out.println("1. Tambah Anggota");
                 System.out.println("2. Cari Anggota");
                 System.out.println("3. Tampilkan Semua Anggota");
                 System.out.println("4. Kembali");
+
                 System.out.print("Pilih menu anggota: ");
 
                 int pilihan = input.nextInt();
                 input.nextLine();
 
                 switch (pilihan) {
+
                     case 1:
                         tambahAnggota();
                         break;
+
                     case 2:
                         cariAnggota();
                         break;
+
                     case 3:
                         sistem.tampilkanAnggota();
                         break;
+
                     case 4:
                         kembali = true;
                         break;
+
                     default:
                         throw new TanamanException(
                                 "Pilihan menu anggota tidak valid.");
                 }
 
             } catch (InputMismatchException e) {
+
                 System.out.println(
                         "Kesalahan: pilihan harus berupa angka.");
+
                 input.nextLine();
 
             } catch (TanamanException e) {
+
                 System.out.println(
                         "Pesan Exception: " + e.getMessage());
 
             } finally {
+
                 System.out.println(
                         "Finally: data anggota diperiksa.");
             }
@@ -321,12 +395,15 @@ public class Main {
     }
 
     static void tambahAnggota() throws TanamanException {
+
         System.out.print("Masukkan NPM: ");
         String npm = input.nextLine();
+
         validasiTeks(npm, "NPM");
 
         System.out.print("Masukkan nama anggota: ");
         String nama = input.nextLine();
+
         validasiTeks(nama, "Nama anggota");
 
         if (sistem.getDataAnggota().containsKey(npm)) {
@@ -338,8 +415,10 @@ public class Main {
     }
 
     static void cariAnggota() throws TanamanException {
+
         System.out.print("Masukkan NPM yang dicari: ");
         String npm = input.nextLine();
+
         validasiTeks(npm, "NPM pencarian");
 
         Anggota anggota = sistem.cariAnggota(npm);
@@ -354,10 +433,12 @@ public class Main {
     }
 
     static void menuTransaksi() throws TanamanException {
+
         System.out.println("\n--- Transaksi Association ---");
 
         System.out.print("Masukkan NPM anggota: ");
         String npm = input.nextLine();
+
         validasiTeks(npm, "NPM anggota");
 
         Anggota anggota = sistem.cariAnggota(npm);
@@ -371,6 +452,7 @@ public class Main {
 
         System.out.print("Masukkan nama tanaman: ");
         String namaTanaman = input.nextLine();
+
         validasiTeks(namaTanaman, "Nama tanaman");
 
         Tanaman tanaman = sistem.cariTanaman(namaTanaman);
@@ -380,8 +462,7 @@ public class Main {
                     "Tanaman tidak ditemukan.");
         }
 
-        // Association: dua objek mandiri berinteraksi
-        // melalui method transaksi.
+        // Association
         transaksi.lakukanTransaksi(anggota, tanaman);
     }
 }
